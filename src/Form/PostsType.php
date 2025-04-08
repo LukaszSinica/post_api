@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Posts;
+use App\Entity\Image;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +18,12 @@ class PostsType extends AbstractType
             ->add('content')
             ->add('created_at', null, [
                 'widget' => 'single_text',
+            ])
+            ->add('image', EntityType::class, [
+                'class' => Image::class,
+                'choice_label' => 'originalFilename',
+                'required' => false,
+                'placeholder' => 'Choose an image',
             ])
         ;
     }

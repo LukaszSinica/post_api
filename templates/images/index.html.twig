@@ -1,0 +1,17 @@
+{# templates/images/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Images</h1>
+    
+    <a href="{{ path('app_images_upload') }}" class="btn btn-primary">Upload New Image</a>
+    
+    <div class="image-grid">
+        {% for image in images %}
+            <div class="image-item">
+                <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="{{ image.originalFilename }}">
+                <p>{{ image.originalFilename }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{# templates/images/upload.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Upload Image</h1>
+    
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <form method="post" enctype="multipart/form-data">
+        <div>
+            <label for="image">Choose Image (JPG, PNG, GIF, max 5MB)</label>
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif" required>
+        </div>
+        <button type="submit">Upload</button>
+    </form>
+{% endblock %}
