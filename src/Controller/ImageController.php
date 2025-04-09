@@ -38,7 +38,7 @@ final class ImageController extends AbstractController
             $uploadedFile = $request->files->get('image');
             
             if ($uploadedFile) {
-                // Validate file
+
                 $constraints = new File([
                     'maxSize' => self::MAX_SIZE,
                     'mimeTypes' => self::ALLOWED_MIMETYPES,
