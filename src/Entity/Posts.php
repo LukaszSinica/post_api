@@ -23,7 +23,7 @@ class Posts
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(targetEntity: Image::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(name: "image_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?Image $image = null;
 
     public function getId(): ?int

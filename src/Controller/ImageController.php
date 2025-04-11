@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/images')]
 final class ImageController extends AbstractController
@@ -22,7 +23,7 @@ final class ImageController extends AbstractController
     
     private const MAX_SIZE = '5M';
 
-    #[Route('/', name: 'app_images_index', methods: ['GET'])]
+    #[Route(name: 'app_images_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $images = $entityManager->getRepository(Image::class)->findAll();
@@ -83,5 +84,26 @@ final class ImageController extends AbstractController
         }
 
         return $this->render('images/upload.html.twig');
+    }
+
+    #[Route('/{id}/delete', name: 'app_images_delete', methods: ['DELETE'])]
+    public function delete(Request $request, Image $image, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
+            // Posts will automatically set image to null due to onDelete="SET NULL"
+            
+            // Delete file from uploads folder
+            $imagePath = $this->getParameter('images_directory').'/'.$image->getFilename();
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            $entityManager->remove($image);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Image deleted successfully');
+        }
+
+        return $this->redirectToRoute('app_images_index');
     }
 }

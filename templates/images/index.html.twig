@@ -4,6 +4,12 @@
 {% block body %}
     <h1>Images</h1>
     
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <a href="{{ path('app_images_upload') }}" class="btn btn-primary">Upload New Image</a>
     <a href="{{ path('app_home') }}">back to home</a>
 
@@ -12,6 +18,10 @@
             <div class="image-item">
                 <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="{{ image.originalFilename }}">
                 <p>{{ image.originalFilename }}</p>
+                <form method="DELETE" action="{{ path('app_images_delete', {'id': image.id}) }}" onsubmit="return confirm('Are you sure you want to delete this image?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ image.id) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </div>
         {% endfor %}
     </div>
