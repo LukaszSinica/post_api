@@ -1,21 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
-
 {% block body %}
     <div class="container">
-        <div class="user-info">
-            <h1>Welcome {{ app.user.email }}</h1>
-            <a href="{{ path('app_logout') }}" class="btn btn-danger">Logout</a>
-        </div>
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="admin-links">
-                <h3>Admin Actions:</h3>
-                <ul>
-                    <li><a href="{{ path('app_posts_index') }}">Manage Posts</a></li>
-                    <li><a href="{{ path('app_images_index') }}">Manage Images</a></li>
-                </ul>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Welcome to Blog Admin</h2>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="list-group mt-4">
+                                <a href="{{ path('app_posts_index') }}" class="list-group-item list-group-item-action">
+                                    <h5 class="mb-1">Manage Posts</h5>
+                                    <p class="mb-1">Create, edit, and delete blog posts</p>
+                                </a>
+                                <a href="{{ path('app_images_index') }}" class="list-group-item list-group-item-action">
+                                    <h5 class="mb-1">Manage Images</h5>
+                                    <p class="mb-1">Upload and manage blog images</p>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}
