@@ -1,4 +1,11 @@
+{# filepath: templates/posts/_form.html.twig #}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.title) }}
+    <div class="mb-3">
+        <label class="form-label">Content</label>
+        <div class="quill-editor"></div>
+        {{ form_widget(form.content) }}
+    </div>
+    {{ form_row(form.image) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
