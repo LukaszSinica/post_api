@@ -33,7 +33,10 @@ class PostsType extends AbstractType
                 'choice_label' => 'originalFilename',
                 'required' => false,
                 'placeholder' => 'Choose an image',
-                'attr' => ['class' => 'form-select']
+                'attr' => ['class' => 'form-select image-select'],
+                'choice_attr' => function(Image $image) {
+                    return ['data-filename' => $image->getFilename()];
+                },
             ])
         ;
     }

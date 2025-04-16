@@ -59,13 +59,13 @@ final class PostsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_posts_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_posts_index');
         }
 
         return $this->render('posts/edit.html.twig', [
             'post' => $post,
             'form' => $form,
+            'content' => $post->getContent() // Pass content explicitly
         ]);
     }
 

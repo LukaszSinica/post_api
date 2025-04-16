@@ -40,6 +40,19 @@ textarea.form-control {
     box-shadow: 0 0 15px rgba(0,0,0,0.05);
 }
 
+.table td .btn-group {
+    display: flex;
+    align-items: center;
+}
+
+.table td .btn-group .btn {
+    margin: 0 0.25rem;
+}
+
+.table td .btn-group form {
+    margin: 0;
+}
+
 /* Image grid */
 .image-grid {
     display: grid;
@@ -63,10 +76,44 @@ textarea.form-control {
     margin-bottom: 1rem;
 }
 
+.current-image {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    background-color: #f8f9fa;
+}
+
+.img-thumbnail {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-preview-container {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    background-color: #f8f9fa;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-preview {
+    max-width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.no-image {
+    color: #6c757d;
+    font-style: italic;
+}
+
 /* Cards */
 .card {
-    border: none;
     box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border: none;
     transition: transform 0.2s;
     margin-bottom: 2rem;
 }
@@ -75,19 +122,72 @@ textarea.form-control {
     transform: translateY(-5px);
 }
 
+.card-title {
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.post-settings-card {
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border: none;
+    transition: none;
+}
+
+.post-settings-card:hover {
+    transform: none;
+}
+
 /* Buttons */
 .btn {
     padding: 0.5rem 1.5rem;
     border-radius: 5px;
+    margin: 0 0.5rem;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.btn:hover, 
+.btn:focus, 
+.btn:active {
+    outline: none !important;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    border: none;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
 
-.btn-primary:hover {
-    background-color: darken(var(--primary-color), 10%);
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #0b5ed7 !important;
+    border-color: #0a58ca !important;
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25) !important;
+}
+
+.btn-group {
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.btn-group form {
+    margin: 0;
+}
+
+.btn-group .btn {
+    border-radius: 0.25rem !important;
+    margin: 0 0.25rem;
+}
+
+.btn:not(.btn-group .btn) {
+    margin: 0 0.5rem;
+}
+
+.btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin: 0 0.15rem;
 }
 
 /* Main content */
@@ -136,4 +236,17 @@ textarea.form-control {
 
 .ql-html svg {
     width: 45px;
+}
+
+/* Date picker */
+.date-picker {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.date-picker:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
 }

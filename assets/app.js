@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const editors = document.querySelectorAll('.quill-editor');
     editors.forEach(editor => {
+        // Get the associated textarea
+        const textarea = editor.nextElementSibling;
+        const initialContent = editor.dataset.content || '';  // Get initial content from dataset
+
         const quill = new Quill(editor, {
             theme: 'snow',
             modules: {
@@ -56,10 +60,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Update hidden form field
-        const formField = editor.nextElementSibling;
+        // Set initial content from database
+        if (initialContent) {
+            quill.root.innerHTML = initialContent;
+            textarea.value = initialContent;
+        }
+
+        // Update hidden form field on changes
         quill.on('text-change', () => {
-            formField.value = quill.root.innerHTML;
+            textarea.value = quill.root.innerHTML;
         });
     });
+
+    // Image preview handler
+    const imageSelect = document.querySelector('.image-select');
+    const previewContainer = document.querySelector('.image-preview-container');
+
+    if (imageSelect) {
+        imageSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const imagePath = selectedOption.value ? `/uploads/images/${selectedOption.getAttribute('data-filename')}` : '';
+            
+            if (imagePath) {
+                previewContainer.innerHTML = `<img src="${imagePath}" alt="${selectedOption.text}" class="img-preview">`;
+            } else {
+                previewContainer.innerHTML = '<div class="no-image">No image selected</div>';
+            }
+        });
+    }
 });

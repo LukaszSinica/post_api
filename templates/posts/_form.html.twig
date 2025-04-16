@@ -1,11 +1,52 @@
 {# filepath: templates/posts/_form.html.twig #}
 {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    <div class="mb-3">
-        <label class="form-label">Content</label>
-        <div class="quill-editor"></div>
-        {{ form_widget(form.content) }}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-3">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <div class="quill-editor" data-content="{{ form.content.vars.value|raw }}"></div>
+                {{ form_widget(form.content) }}
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card post-settings-card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Post Settings</h5>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.created_at, 'Publication Date', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.created_at, {
+                            'attr': {
+                                'class': 'form-control date-picker'
+                            }
+                        }) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.image) }}
+                        <div class="image-preview-container mb-2">
+                            {% if form.vars.data.image %}
+                                <img src="{{ asset('uploads/images/' ~ form.vars.data.image.filename) }}" 
+                                     alt="{{ form.vars.data.image.originalFilename }}"
+                                     class="img-preview">
+                            {% else %}
+                                <div class="no-image">No image selected</div>
+                            {% endif %}
+                        </div>
+                        {{ form_widget(form.image) }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {{ form_row(form.image) }}
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+    <div class="mt-4">
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
 {{ form_end(form) }}
