@@ -86,13 +86,11 @@ final class ImageController extends AbstractController
         return $this->render('images/upload.html.twig');
     }
 
-    #[Route('/{id}/delete', name: 'app_images_delete', methods: ['DELETE'])]
+    #[Route('/{id}/delete', name: 'app_images_delete', methods: ['POST'])]
     public function delete(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
-            // Posts will automatically set image to null due to onDelete="SET NULL"
-            
-            // Delete file from uploads folder
+
             $imagePath = $this->getParameter('images_directory').'/'.$image->getFilename();
             if (file_exists($imagePath)) {
                 unlink($imagePath);

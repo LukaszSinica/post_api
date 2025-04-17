@@ -137,6 +137,15 @@ textarea.form-control {
     transform: none;
 }
 
+/* Home page specific card */
+.home-card {
+    transition: none;
+}
+
+.home-card:hover {
+    transform: none;
+}
+
 /* Buttons */
 .btn {
     padding: 0.5rem 1.5rem;
@@ -249,4 +258,15 @@ textarea.form-control {
 .date-picker:focus {
     border-color: #86b7fe;
     box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+/* Post thumbnail */
+.post-thumbnail {
+    max-width: 200px;
+}
+
+.post-thumbnail .img-thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
