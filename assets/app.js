@@ -72,6 +72,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Initialize read-only viewer
+    const viewers = document.querySelectorAll('.quill-viewer');
+    viewers.forEach(viewer => {
+        const quill = new Quill(viewer, {
+            theme: 'snow',
+            modules: {
+                toolbar: false
+            },
+            readOnly: true
+        });
+
+        const content = viewer.dataset.content || '';
+        if (content) {
+            quill.root.innerHTML = content;
+        }
+    });
+
     // Image preview handler
     const imageSelect = document.querySelector('.image-select');
     const previewContainer = document.querySelector('.image-preview-container');

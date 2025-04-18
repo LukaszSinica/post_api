@@ -247,6 +247,18 @@ textarea.form-control {
     width: 45px;
 }
 
+.quill-viewer {
+    border: none !important;
+}
+
+.quill-viewer .ql-container {
+    border: none !important;
+}
+
+.quill-viewer .ql-editor {
+    padding: 0;
+}
+
 /* Date picker */
 .date-picker {
     background-color: #fff;
