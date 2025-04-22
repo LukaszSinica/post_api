@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: PostsRepository::class)]
 class Posts
@@ -16,7 +17,7 @@ class Posts
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT, length: 4294967295)]
     private ?string $content = null;
 
     #[ORM\Column]
