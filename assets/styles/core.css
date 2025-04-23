@@ -1,0 +1,33 @@
+.card {
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border: none;
+    transition: transform 0.2s;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.home-card {
+    transition: none;
+}
+
+.home-card:hover {
+    transform: none;
+}
+
+.container {
+    padding: 0 2rem;
+}
+
+.main-content {
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 1200px;
+}

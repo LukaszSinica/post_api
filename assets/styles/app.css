@@ -1,3 +1,8 @@
+@import './core.css';
+@import './buttons.css';
+@import './posts.css';
+@import './forms.css';
+
 :root {
     --primary-color: #0d6efd;
     --secondary-color: #6c757d;
@@ -110,108 +115,6 @@ textarea.form-control {
     font-style: italic;
 }
 
-/* Cards */
-.card {
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-    border: none;
-    transition: transform 0.2s;
-    margin-bottom: 2rem;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card-title {
-    color: #495057;
-    font-size: 1.1rem;
-}
-
-.post-settings-card {
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-    border: none;
-    transition: none;
-}
-
-.post-settings-card:hover {
-    transform: none;
-}
-
-/* Home page specific card */
-.home-card {
-    transition: none;
-}
-
-.home-card:hover {
-    transform: none;
-}
-
-/* Buttons */
-.btn {
-    padding: 0.5rem 1.5rem;
-    border-radius: 5px;
-    margin: 0 0.5rem;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.btn:hover, 
-.btn:focus, 
-.btn:active {
-    outline: none !important;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
-}
-
-.btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-    background-color: #0b5ed7 !important;
-    border-color: #0a58ca !important;
-    box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25) !important;
-}
-
-.btn-group {
-    gap: 0.5rem;
-    margin: 0.5rem 0;
-}
-
-.btn-group form {
-    margin: 0;
-}
-
-.btn-group .btn {
-    border-radius: 0.25rem !important;
-    margin: 0 0.25rem;
-}
-
-.btn:not(.btn-group .btn) {
-    margin: 0 0.5rem;
-}
-
-.btn-group-sm .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    margin: 0 0.15rem;
-}
-
-/* Main content */
-.main-content {
-    padding: 2rem;
-    margin: 0 auto;
-    max-width: 1200px;
-}
-
-/* Post form */
-.post-form {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .tox-tinymce {
     border-radius: 0.375rem !important;
 }
@@ -219,66 +122,4 @@ textarea.form-control {
 /* Hidden elements */
 .hidden {
     display: none;
-}
-
-/* Quill editor */
-.quill-editor {
-    height: 300px;
-    margin-bottom: 1rem;
-}
-
-.ql-editor {
-    min-height: 300px;
-}
-
-.ql-container {
-    font-size: 16px;
-}
-
-.ql-html {
-    width: 45px !important;
-}
-
-.ql-html.active {
-    color: #06c;
-}
-
-.ql-html svg {
-    width: 45px;
-}
-
-.quill-viewer {
-    border: none !important;
-}
-
-.quill-viewer .ql-container {
-    border: none !important;
-}
-
-.quill-viewer .ql-editor {
-    padding: 0;
-}
-
-/* Date picker */
-.date-picker {
-    background-color: #fff;
-    border: 1px solid #ced4da;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-}
-
-.date-picker:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
-}
-
-/* Post thumbnail */
-.post-thumbnail {
-    max-width: 200px;
-}
-
-.post-thumbnail .img-thumbnail {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
 }

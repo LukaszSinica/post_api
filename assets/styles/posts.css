@@ -1,0 +1,43 @@
+.post-settings-card {
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border: none;
+    transition: none;
+}
+
+.post-settings-card:hover {
+    transform: none;
+}
+
+.post-thumbnail {
+    max-width: 200px;
+}
+
+.post-thumbnail .img-thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.quill-viewer {
+    border: none !important;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.quill-viewer .ql-container {
+    border: none !important;
+}
+
+.quill-viewer .ql-editor {
+    padding: 0;
+    height: auto;
+    max-height: 400px;
+}
+
+.show-post-card {
+    transition: none;
+}
+
+.show-post-card:hover {
+    transform: none;
+}

@@ -11,7 +11,9 @@ Encore
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
+    .enablePostCssLoader()
     .enableSourceMaps(!Encore.isProduction())
+    
 ;
 
 module.exports = Encore.getWebpackConfig();
