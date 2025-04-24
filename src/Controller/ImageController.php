@@ -24,11 +24,27 @@ final class ImageController extends AbstractController
     private const MAX_SIZE = '5M';
 
     #[Route(name: 'app_images_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $images = $entityManager->getRepository(Image::class)->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = $this->getParameter('pagination_limit');
+
+        $repository = $entityManager->getRepository(Image::class);
+        $total = $repository->count([]);
+        
+        $images = $repository->findBy(
+            [], 
+            ['id' => 'DESC'],
+            $limit,
+            ($page - 1) * $limit
+        );
+
+        $maxPages = ceil($total / $limit);
+
         return $this->render('images/index.html.twig', [
             'images' => $images,
+            'currentPage' => $page,
+            'maxPages' => $maxPages
         ]);
     }
 

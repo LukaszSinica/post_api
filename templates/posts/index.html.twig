@@ -33,4 +33,28 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% if maxPages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if currentPage > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path('app_posts_index', {page: currentPage - 1}) }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for i in 1..maxPages %}
+                    <li class="page-item {{ currentPage == i ? 'active' : '' }}">
+                        <a class="page-link" href="{{ path('app_posts_index', {page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if currentPage < maxPages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path('app_posts_index', {page: currentPage + 1}) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}

@@ -10,16 +10,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/posts')]
 final class PostsController extends AbstractController
 {
     #[Route(name: 'app_posts_index', methods: ['GET'])]
-    public function index(PostsRepository $postsRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $page = $request->query->getInt('page', 1);
+        $limit = $this->getParameter('pagination_limit');
+
+        $repository = $entityManager->getRepository(Posts::class);
+        $total = $repository->count([]);
+        
+        $posts = $repository->findBy(
+            [], 
+            ['created_at' => 'DESC'],
+            $limit,
+            ($page - 1) * $limit
+        );
+
+        $maxPages = ceil($total / $limit);
+
         return $this->render('posts/index.html.twig', [
-            'posts' => $postsRepository->findAll(),
+            'posts' => $posts,
+            'currentPage' => $page,
+            'maxPages' => $maxPages
         ]);
     }
 
