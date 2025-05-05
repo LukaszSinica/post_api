@@ -45,3 +45,36 @@
     background-color: #0d6efd;
     border-color: #0d6efd;
 }
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.image-select-item {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.image-select-item:hover {
+    transform: scale(1.05);
+}
+
+.image-select-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
