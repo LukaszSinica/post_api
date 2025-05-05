@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Posts;
 use App\Form\PostsType;
-use App\Repository\PostsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +42,8 @@ final class PostsController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $post = new Posts();
+        $post->setContent('');
+        $post->setCreatedAt(new \DateTimeImmutable('now'));
         $form = $this->createForm(PostsType::class, $post);
         $form->handleRequest($request);
 
@@ -50,12 +51,13 @@ final class PostsController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_posts_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_posts_index');
         }
 
         return $this->render('posts/new.html.twig', [
             'post' => $post,
             'form' => $form,
+            'content' => $post->getContent()
         ]);
     }
 
@@ -81,7 +83,7 @@ final class PostsController extends AbstractController
         return $this->render('posts/edit.html.twig', [
             'post' => $post,
             'form' => $form,
-            'content' => $post->getContent() // Pass content explicitly
+            'content' => $post->getContent()
         ]);
     }
 

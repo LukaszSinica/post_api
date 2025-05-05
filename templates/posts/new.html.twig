@@ -3,8 +3,9 @@
 {% block title %}New Post{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="mb-4">Create New Post</h1>
-        {{ include('posts/_form.html.twig') }}
+    <h1 class="mb-4">Create New Post</h1>
+    {{ include('posts/_form.html.twig') }}
+    <div class="mt-3 btn-group" role="group">
+        <a href="{{ path('app_posts_index') }}" class="btn btn-secondary">Back to List</a>
     </div>
 {% endblock %}

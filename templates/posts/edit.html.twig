@@ -4,9 +4,7 @@
 
 {% block body %}
     <h1>Edit Post</h1>
-
     {{ include('posts/_form.html.twig', {'button_label': 'Update'}) }}
-
     <div class="mt-3 btn-group" role="group">
         <a href="{{ path('app_posts_index') }}" class="btn btn-secondary">Back to List</a>
         {{ include('posts/_delete_form.html.twig') }}

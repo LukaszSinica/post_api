@@ -1,108 +1,154 @@
 import './styles/app.css';
 import 'bootstrap';
+import { Modal } from 'bootstrap';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleHTML = function(value) {
-        const quill = this.quill;
-        const editor = quill.container.querySelector('.ql-editor');
-        
-        if (this.htmlMode) {
-            // Switch back to rich text
-            this.htmlMode = false;
-            quill.root.innerHTML = editor.innerText;  // Convert back from HTML
-            editor.setAttribute('contenteditable', 'true');
-            this.container.classList.remove('active');
-        } else {
-            // Switch to HTML view
-            this.htmlMode = true;
-            const htmlContent = quill.root.innerHTML;
-            editor.innerText = htmlContent;  // Show HTML as plain text
-            editor.setAttribute('contenteditable', 'true');
-            this.container.classList.add('active');
+    const editorElement = document.querySelector('.editor');
+    if (!editorElement) return;
+
+    // Add custom HTML button format
+    const icons = Quill.import('ui/icons');
+    icons['html'] = 'HTML';
+
+    let isHtmlMode = false;
+    
+    const modalElement = document.getElementById('imageModal');
+    const imageModal = new Modal(modalElement); 
+
+    // Function to refresh image grid
+    const refreshImageGrid = async () => {
+        try {
+            const response = await fetch('/editor/images/list');
+            const images = await response.json();
+            const imageGrid = document.getElementById('existingImages');
+            imageGrid.innerHTML = '';
+            
+            images.forEach(image => {
+                const div = document.createElement('div');
+                div.className = 'image-item';
+                div.innerHTML = `<img src="/uploads/images/${image}" alt="">`;
+                div.onclick = () => {
+                    const range = quill.getSelection(true);
+                    quill.insertEmbed(range.index, 'image', `/uploads/images/${image}`);
+                    imageModal.hide();
+                };
+                imageGrid.appendChild(div);
+            });
+        } catch (error) {
+            console.error('Failed to load images:', error);
         }
     };
 
-    // Add button to toolbar
-    const Header = Quill.import('ui/icons');
-    Header['html'] = '<svg viewBox="0 0 18 18"><text x="50%" y="50%" text-anchor="middle" dy=".3em">HTML</text></svg>';
-
-    // Register custom handler
-    Quill.register('modules/toggleHTML', function(quill, options) {
-        const toolbar = quill.container.previousSibling;
-        const button = toolbar.querySelector('.ql-html');
-        button.addEventListener('click', toggleHTML.bind({ quill, htmlMode: false, container: button }));
-    });
-
-    const editors = document.querySelectorAll('.quill-editor');
-    editors.forEach(editor => {
-        // Get the associated textarea
-        const textarea = editor.nextElementSibling;
-        const initialContent = editor.dataset.content || '';  // Get initial content from dataset
-
-        const quill = new Quill(editor, {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: [
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{ 'header': 1 }, { 'header': 2 }],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'indent': '-1'}, { 'indent': '+1' }],
-                        ['link', 'image'],
-                        ['clean'],
-                        ['html']
-                    ]
-                },
-                toggleHTML: true
+    // Initialize Quill
+    const quill = new Quill(editorElement, {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'image'],
+                    ['clean'],
+                    ['html']
+                ],
+                handlers: {
+                    html: function() {
+                        
+                        const htmlButton = document.querySelector('.ql-html');
+                        isHtmlMode = !isHtmlMode;
+                        
+                        if (isHtmlMode) {
+                            htmlButton.classList.add('active');
+                            const htmlContent = quill.root.innerHTML;
+                            const textarea = document.createElement('textarea');
+                            textarea.setAttribute('id', 'html-textarea');
+                            textarea.style.cssText = 'width: 100%; height: 400px; margin-top: 10px; font-family: monospace;';
+                            textarea.value = htmlContent;
+                            quill.root.parentNode.replaceChild(textarea, quill.root);
+                        } else {
+                            htmlButton.classList.remove('active');
+                            const textarea = document.getElementById('html-textarea');
+                            if (textarea) {
+                                const htmlContent = textarea.value;
+                                quill.root.innerHTML = htmlContent;
+                                textarea.parentNode.replaceChild(quill.root, textarea);
+                            }
+                        }
+                    },
+                    image: function() {
+                        refreshImageGrid();
+                        imageModal.show();
+                    }
+                }
             }
-        });
-
-        // Set initial content from database
-        if (initialContent) {
-            quill.root.innerHTML = initialContent;
-            textarea.value = initialContent;
-        }
-
-        // Update hidden form field on changes
-        quill.on('text-change', () => {
-            textarea.value = quill.root.innerHTML;
-        });
-    });
-
-    // Initialize read-only viewer
-    const viewers = document.querySelectorAll('.quill-viewer');
-    viewers.forEach(viewer => {
-        const quill = new Quill(viewer, {
-            theme: 'snow',
-            modules: {
-                toolbar: false
-            },
-            readOnly: true
-        });
-
-        const content = viewer.dataset.content || '';
-        if (content) {
-            quill.root.innerHTML = content;
         }
     });
 
-    // Image preview handler
-    const imageSelect = document.querySelector('.image-select');
-    const previewContainer = document.querySelector('.image-preview-container');
+    // Handle new image upload
+    document.getElementById('imageUpload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('imageFile', file);
 
-    if (imageSelect) {
-        imageSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const imagePath = selectedOption.value ? `/uploads/images/${selectedOption.getAttribute('data-filename')}` : '';
+        try {
+            const response = await fetch('/editor/images/upload', {
+                method: 'POST',
+                body: formData
+            });
             
-            if (imagePath) {
-                previewContainer.innerHTML = `<img src="${imagePath}" alt="${selectedOption.text}" class="img-preview">`;
-            } else {
-                previewContainer.innerHTML = '<div class="no-image">No image selected</div>';
+            if (response.ok) {
+                // Clear the file input
+                e.target.value = '';
+                // Refresh the image grid
+                await refreshImageGrid();
             }
+        } catch (error) {
+            console.error('Upload failed:', error);
+        }
+    });
+
+    // Add custom button styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .ql-html {
+            font-family: monospace;
+            font-weight: bold;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .ql-html.active {
+            background-color: #e6e6e6;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Form submission handler with Symfony form field selector
+    if (!quill.root.innerHTML) {
+        quill.root.innerHTML = '<p></p>';
+    }
+
+    const form = document.querySelector('form');
+    const contentInput = document.getElementById('posts_content');
+    
+    if (form && contentInput) {
+        // Update content before form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            contentInput.value = quill.root.innerHTML;
+            form.submit();
+        });
+
+        // Sync Quill changes to hidden input
+        quill.on('text-change', function() {
+            contentInput.value = quill.root.innerHTML;
         });
     }
 });

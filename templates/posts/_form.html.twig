@@ -1,5 +1,24 @@
 {# filepath: templates/posts/_form.html.twig #}
 {{ form_start(form) }}
+    <div class="modal fade" id="imageModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="imageUpload" accept="image/*">
+                    </div>
+                    <div class="image-grid" id="existingImages">
+                        <!-- Images will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="mb-3">
@@ -9,11 +28,21 @@
 
             <div class="mb-3">
                 <label class="form-label">Content</label>
-                <div class="quill-editor" data-content="{{ form.content.vars.value|raw }}"></div>
-                {{ form_widget(form.content) }}
+                <div class="editor">
+                {% if form.content.vars.value is defined %}
+                    {{ form.content.vars.value|raw }}
+                {% endif %}
+                </div>
             </div>
+            {{ form_widget(form.content, {
+                'attr': {
+                    'class': 'd-none',
+                    'id': 'posts_content',
+                    'required': 'required'
+                }
+            }) }}
         </div>
-        
+    
         <div class="col-md-4">
             <div class="card post-settings-card">
                 <div class="card-body">
@@ -29,6 +58,7 @@
                     </div>
 
                     <div class="mb-3">
+                        
                         {{ form_label(form.image) }}
                         <div class="image-preview-container mb-2">
                             {% if form.vars.data.image %}
