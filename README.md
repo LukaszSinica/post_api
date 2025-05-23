@@ -1,6 +1,6 @@
 # Post Api
 
-Post api is a backend server that allows to manage posts for my blog on [portfolio](https://www.sinicalukasz-it.pl/)
+Post api is a backend server that allows to manage posts for my blog on [portfolio blog](https://www.sinicalukasz-it.pl/blog)
 
 ## Techstack
 
